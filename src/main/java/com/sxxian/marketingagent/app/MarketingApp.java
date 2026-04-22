@@ -124,7 +124,9 @@ public class MarketingApp {
                 .prompt()
                 .user(message)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
-                .advisors(new QuestionAnswerAdvisor(marketingAppVectorStore))
+//                .advisors(new QuestionAnswerAdvisor(marketingAppVectorStore))
+                // 应用 RAG 检索增强服务（基于云知识库服务）
+                .advisors(marketingAppRagCloudAdvisor)
                 .call()
                 .chatResponse();
         String content = chatResponse.getResult().getOutput().getText();
