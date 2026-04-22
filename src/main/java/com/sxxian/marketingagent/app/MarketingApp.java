@@ -3,15 +3,19 @@ package com.sxxian.marketingagent.app;
 
 import com.sxxian.marketingagent.advisor.MyLoggerAdvisor;
 import com.sxxian.marketingagent.chatmemory.FileBasedChatMemory;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
+import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemoryRepository;
 import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.model.MessageAggregator;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -97,5 +101,34 @@ public class MarketingApp {
                 .entity(MarketingReport.class);
         log.info("marketingReport{}",marketingReport);
         return marketingReport;
+    }
+
+
+    // AI 恋爱知识库问答功能
+
+    @Resource
+    private VectorStore marketingAppVectorStore;
+
+    @Resource
+    private Advisor marketingAppRagCloudAdvisor;
+
+
+    /**
+     * RAG
+     * @param message
+     * @param chatId
+     * @return
+     */
+    public String doChatWithRag(String message, String chatId){
+        ChatResponse chatResponse = chatClient
+                .prompt()
+                .user(message)
+                .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
+                .advisors(new QuestionAnswerAdvisor(marketingAppVectorStore))
+                .call()
+                .chatResponse();
+        String content = chatResponse.getResult().getOutput().getText();
+        log.info("RagContent{}",content);
+        return content;
     }
 }

@@ -2,6 +2,7 @@ package com.sxxian.marketingagent.rag;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
+
 import org.springframework.ai.reader.markdown.MarkdownDocumentReader;
 import org.springframework.ai.reader.markdown.config.MarkdownDocumentReaderConfig;
 import org.springframework.core.io.Resource;
@@ -14,11 +15,11 @@ import java.util.List;
 
 @Component
 @Slf4j
-class MarketingDocumentLoader {
+class MarketingAppDocumentLoader {
 
     private final ResourcePatternResolver resourcePatternResolver;
 
-    MarketingDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
+    MarketingAppDocumentLoader(ResourcePatternResolver resourcePatternResolver) {
         this.resourcePatternResolver = resourcePatternResolver;
     }
 

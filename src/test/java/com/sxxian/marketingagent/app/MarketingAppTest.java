@@ -37,4 +37,12 @@ class MarketingAppTest {
         MarketingApp.MarketingReport marketingReport = marketingApp.doChatWithReport(message, chatId);
         Assertions.assertNotNull(marketingReport);
     }
+
+    @Test
+    void doChatWithRag() {
+        String chatId = UUID.randomUUID().toString();
+        String message = "分享一个小红书营销的爆款案例";
+        String answerWithRag = marketingApp.doChatWithRag(message, chatId);
+        Assertions.assertNotNull(answerWithRag);
+    }
 }
