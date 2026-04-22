@@ -23,7 +23,7 @@ class MarketingAppRagCloudAdvisorConfig {
         DashScopeApi dashScopeApi = DashScopeApi.builder()
                 .apiKey(dashScopeApiKey)
                 .build();
-        final String KNOWLEDGE_INDEX = "Marketing Agent";
+        final String KNOWLEDGE_INDEX = "Marketing Agent RAG";
         DocumentRetriever documentRetriever = new DashScopeDocumentRetriever(dashScopeApi,
                 DashScopeDocumentRetrieverOptions.builder()
                         .withIndexName(KNOWLEDGE_INDEX)
