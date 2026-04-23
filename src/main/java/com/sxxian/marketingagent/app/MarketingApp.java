@@ -3,6 +3,7 @@ package com.sxxian.marketingagent.app;
 
 import com.sxxian.marketingagent.advisor.MyLoggerAdvisor;
 import com.sxxian.marketingagent.chatmemory.FileBasedChatMemory;
+import com.sxxian.marketingagent.rag.QueryRewriter;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
@@ -112,6 +113,12 @@ public class MarketingApp {
     @Resource
     private Advisor marketingAppRagCloudAdvisor;
 
+//    @Resource
+//    private VectorStore pgVectorVectorStore;
+
+    @Resource
+    private QueryRewriter queryRewriter;
+
 
     /**
      * RAG
@@ -120,9 +127,10 @@ public class MarketingApp {
      * @return
      */
     public String doChatWithRag(String message, String chatId){
+        String rewrittenMessage = queryRewriter.doQueryRewrite(message);
         ChatResponse chatResponse = chatClient
                 .prompt()
-                .user(message)
+                .user(rewrittenMessage)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, chatId))
 //                .advisors(new QuestionAnswerAdvisor(marketingAppVectorStore))
                 // 应用 RAG 检索增强服务（基于云知识库服务）

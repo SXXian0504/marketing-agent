@@ -41,7 +41,7 @@ class MarketingAppTest {
     @Test
     void doChatWithRag() {
         String chatId = UUID.randomUUID().toString();
-        String message = "分享一个小红书营销的爆款案例";
+        String message = "简要告诉我，我应该如何提升小红书营销图文的转化率。";
         String answerWithRag = marketingApp.doChatWithRag(message, chatId);
         Assertions.assertNotNull(answerWithRag);
     }
